@@ -1,0 +1,17 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:18.0.2
+    container_name: keycloak
+    ports:
+      - 18080:8080
+      - 8787:8787
+    command: [ "start-dev", "--debug", "--import-realm" ]
+    environment:
+      KC_HTTP_RELATIVE_PATH: /auth
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: keycloak
+      KC_FEATURES: scripts
+      DEBUG_PORT: "*:8787"
+    volumes:
+      - ./target/keycloak-redirect-authenticator.jar:/opt/keycloak/providers/keycloak-redirect-authenticator.jar
+      - ./test-realm.json:/opt/keycloak/data/import/test-realm.json
